@@ -8,11 +8,15 @@ data = json.load(open('data.json', 'r'))
 
 # Create function to get user input and check against JSON data
 def get_definition():
-    user_word = input("Enter a word: ").lower()
+    user_word = input("Enter a word: ")
 
     # If user-submitted word is a key in the JSON data, return the matching value
-    if user_word in data.keys():
+    if user_word.lower() in data.keys():
         return data[user_word]
+    elif user_word.title() in data.keys():
+        return data[user_word.title()]
+    elif user_word.upper() in data.keys():
+        return data[user_word.upper()]
 
     # If user-submitted word doesn't match a key in JSON data, check for similar words
     # and ask user if the most similar is the one they meant to type
@@ -20,13 +24,13 @@ def get_definition():
         # Loop through results of close matches (top 3 by default) for the user's word in the JSON data
         # and prompt user if the similarity ratio is higher than 0.8
         for s in difflib.get_close_matches(user_word, data.keys()):
-            if difflib.SequenceMatcher(None, s, user_word).ratio() > 0.7:
+            if difflib.SequenceMatcher(None, s, user_word).ratio() > 0.8:
                 print("Did you mean '" + s + "'? (yes or no)")
 
                 user_meant = input()
 
                 # If user selects yes for suggested word, return the matching value
-                if user_meant.lower() == "yes":
+                if user_meant.lower() == "yes" or user_meant.lower() == 'y':
                     return data[s]
 
         # If no words found with a high enough similarity ratio, return message that the 
