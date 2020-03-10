@@ -15,6 +15,8 @@ from tkinter import *
 # Import backend.py script that contains functions for interacting with the database
 import backend
 
+selected_tuple = ()
+
 # Function to look for "ListboxSelected" event, when a line is clicked on in the list box.
 # Fill in the entry fields with the contents of the line that is clicked on
 def get_selected_row(event):
